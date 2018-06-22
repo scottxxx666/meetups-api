@@ -52,7 +52,7 @@ package:
    - ./bin/**
 
 functions:
-  hello:
+  main:
     handler: bin/main
     events:
       - http:
