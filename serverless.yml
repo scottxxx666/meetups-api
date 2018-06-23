@@ -50,6 +50,7 @@ package:
    - ./**
  include:
    - ./bin/**
+   - ./schema.graphql
 
 functions:
   main:
