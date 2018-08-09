@@ -8,6 +8,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	_ "github.com/go-sql-driver/mysql"
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/scottxxx666/meetups-api/resolvers"
 	"github.com/scottxxx666/meetups-api/schema"

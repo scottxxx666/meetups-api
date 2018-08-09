@@ -42,15 +42,18 @@ provider:
 #            - "/*"
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  environment:
+    DB_ACCOUNT: DB_ACCOUNT
+    DB_PASSWORD: DB_PASSWORD
+    DB_HOST: DB_HOST
+    DB_PORT: DB_PORT
+    DB_DATABASE: DB_DATABASE
 
 package:
  exclude:
    - ./**
  include:
    - ./bin/**
-   - ./schema.graphql
 
 functions:
   main:
@@ -59,6 +62,12 @@ functions:
       - http:
           path: graphql
           method: post
+    vpc:
+      securityGroupIds:
+        - securityGroupId1
+      subnetIds:
+        - subnetId1
+        - subnetId2
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
