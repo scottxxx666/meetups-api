@@ -2,6 +2,5 @@ schema {
     query: Query
 }
 type Query{
-    person(id: ID!): Person
     member(id: ID!): Member
 }

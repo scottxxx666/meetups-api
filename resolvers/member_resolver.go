@@ -25,7 +25,6 @@ func (r *MemberResolver) Name() string {
 	return r.m.Name
 }
 
-// func (r *Resolver) Member(args struct{ ID graphql.ID }) *MemberResolver {
 func (r *Resolver) Member(args struct{ ID string }) *MemberResolver {
 	id, err := strconv.ParseUint(args.ID, 10, 64)
 	if err != nil {
