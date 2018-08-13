@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	_ "github.com/go-sql-driver/mysql"
 	graphql "github.com/graph-gophers/graphql-go"
-	"github.com/scottxxx666/meetups-api/resolvers"
+	"github.com/scottxxx666/meetups-api/resolver"
 	"github.com/scottxxx666/meetups-api/schema"
 )
 
@@ -27,7 +27,7 @@ func Handler(context context.Context, request events.APIGatewayProxyRequest) (ev
 		log.Print("Could not decode body", err)
 	}
 
-	mainSchema := graphql.MustParseSchema(schema.GetSchema(), &resolvers.Resolver{})
+	mainSchema := graphql.MustParseSchema(schema.GetSchema(), &resolver.Resolver{})
 	response := mainSchema.Exec(context, params.Query, params.OperationName, params.Variables)
 	responseJSON, err := json.Marshal(response)
 

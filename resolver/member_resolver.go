@@ -1,10 +1,10 @@
-package resolvers
+package resolver
 
 import (
 	"strconv"
 
 	graphql "github.com/graph-gophers/graphql-go"
-	"github.com/scottxxx666/meetups-api/services/memberservice"
+	"github.com/scottxxx666/meetups-api/service/memberservice"
 )
 
 type member struct {
@@ -30,7 +30,7 @@ func (r *Resolver) Member(args struct{ ID string }) *MemberResolver {
 	if err != nil {
 		return nil
 	}
-	model := memberservice.Find(id)
-	m := member{model.ID, model.Name}
+	result := memberservice.Find(id)
+	m := member{result.ID, result.Name}
 	return &MemberResolver{&m}
 }
