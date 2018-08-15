@@ -8,6 +8,8 @@ type Meetup{
     normalPrice: Int!
     createdAt: String!
     updatedAt: String!
-    # location: Int!
+    level: String!
+    location: String!
+    tags: [String!]!
     # origanization: Int!
 }

@@ -7,7 +7,7 @@ import (
 
 func Find(id uint64) model.Meetup {
 	var meetup model.Meetup
-	if app.DB.First(&meetup, id).RecordNotFound() {
+	if app.DB.Preload("Level").Preload("Location").Preload("Tags").First(&meetup, id).RecordNotFound() {
 		panic("no this member")
 	}
 

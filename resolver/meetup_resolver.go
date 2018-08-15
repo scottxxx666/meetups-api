@@ -54,6 +54,22 @@ func (r *MeetupResolver) NormalPrice() int32 {
 	return r.m.NormalPrice
 }
 
+func (r *MeetupResolver) Level() string {
+	return r.m.Level.Name
+}
+
+func (r *MeetupResolver) Location() string {
+	return r.m.Location.Name
+}
+
+func (r *MeetupResolver) Tags() []string {
+	var t []string
+	for _, tag := range r.m.Tags {
+		t = append(t, tag.Name)
+	}
+	return t
+}
+
 func (r *Resolver) Meetup(args struct{ ID string }) *MeetupResolver {
 	id, err := strconv.ParseUint(args.ID, 10, 64)
 	if err != nil {

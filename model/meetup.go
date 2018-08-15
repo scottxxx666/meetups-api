@@ -13,4 +13,9 @@ type Meetup struct {
 	OriganizationID uint64
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
+	Level           Level
+	LevelID         uint64
+	Location        Location
+	LocationID      uint64
+	Tags            []Tag
 }
