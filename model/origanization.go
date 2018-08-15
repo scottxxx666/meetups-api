@@ -7,4 +7,5 @@ type Origanization struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Name      string
+	Meetups   []Meetup
 }

@@ -1,0 +1,13 @@
+type Meetup{
+    id: ID!
+    name: String!
+    startTime: String!
+    endTime: String!
+    rating: Float!
+    ratingCount: Int!
+    normalPrice: Int!
+    createdAt: String!
+    updatedAt: String!
+    # location: Int!
+    # origanization: Int!
+}

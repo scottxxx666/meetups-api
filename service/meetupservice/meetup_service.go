@@ -1,0 +1,15 @@
+package meetupservice
+
+import (
+	"github.com/scottxxx666/meetups-api/app"
+	"github.com/scottxxx666/meetups-api/model"
+)
+
+func Find(id uint64) model.Meetup {
+	var meetup model.Meetup
+	if app.DB.First(&meetup, id).RecordNotFound() {
+		panic("no this member")
+	}
+
+	return meetup
+}

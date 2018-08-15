@@ -3,13 +3,14 @@ package resolver
 import (
 	"strconv"
 
+	"github.com/scottxxx666/meetups-api/model"
+
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/scottxxx666/meetups-api/service/memberservice"
 )
 
 type member struct {
-	ID   uint64
-	Name string
+	model.Member
 }
 
 type MemberResolver struct {
@@ -31,6 +32,6 @@ func (r *Resolver) Member(args struct{ ID string }) *MemberResolver {
 		return nil
 	}
 	result := memberservice.Find(id)
-	m := member{result.ID, result.Name}
+	m := member{result}
 	return &MemberResolver{&m}
 }
