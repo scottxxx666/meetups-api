@@ -1,0 +1,8 @@
+type Review{
+    id: ID!
+    rating: Int!
+    desc: String!
+    createdAt: String!
+    updatedAt: String!
+    member: Member!
+}

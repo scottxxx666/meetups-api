@@ -7,7 +7,7 @@ import (
 
 func Find(id uint64) model.Origanization {
 	var origanization model.Origanization
-	if app.DB.Preload("Meetups").First(&origanization, id).RecordNotFound() {
+	if app.DB.First(&origanization, id).RecordNotFound() {
 		panic("Find no this origanization")
 	}
 

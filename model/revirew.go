@@ -2,10 +2,12 @@ package model
 
 import "time"
 
-type Origanization struct {
+type Review struct {
 	ID        uint64
-	Name      string
-	Meetups   []Meetup
+	Rating    int32
+	Desc      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Member    Member
+	MemberID  uint64
 }

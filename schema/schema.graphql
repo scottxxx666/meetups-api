@@ -5,4 +5,5 @@ type Query{
     member(id: ID!): Member
     origanization(id: ID!): Origanization
     meetup(id: ID!): Meetup
+    review(id: ID!): Review
 }
