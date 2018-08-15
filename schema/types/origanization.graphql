@@ -1,5 +1,5 @@
 type Origanization{
     id: ID!
     name: String!
-    meetups: [Meetup]!
+    meetups: [Meetup!]!
 }
