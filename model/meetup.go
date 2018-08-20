@@ -18,4 +18,5 @@ type Meetup struct {
 	Location        Location
 	LocationID      uint64
 	Tags            []Tag
+	Reviews         []Review
 }

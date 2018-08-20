@@ -7,4 +7,5 @@ type Member struct {
 	Name      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	Reviews   []Review
 }

@@ -10,4 +10,6 @@ type Review struct {
 	UpdatedAt time.Time
 	Member    Member
 	MemberID  uint64
+	Meetup    Meetup
+	MeetupID  uint64
 }
