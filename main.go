@@ -35,7 +35,13 @@ func Handler(context context.Context, request events.APIGatewayProxyRequest) (ev
 		log.Print("Could not decode body")
 	}
 
-	return events.APIGatewayProxyResponse{Body: string(responseJSON), StatusCode: 200}, nil
+	return events.APIGatewayProxyResponse{
+		Body:       string(responseJSON),
+		StatusCode: 200,
+		Headers: map[string]string{
+			"Access-Control-Allow-Methods": "OPTIONS,POST",
+			"Access-Control-Allow-Origin":  "*",
+		}}, nil
 }
 
 func main() {
