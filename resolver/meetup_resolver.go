@@ -70,6 +70,14 @@ func (r *MeetupResolver) Tags() []string {
 	return t
 }
 
+func (r *MeetupResolver) Reviews() []*ReviewResolver {
+	var result []*ReviewResolver
+	for _, rev := range r.m.Reviews {
+		result = append(result, &ReviewResolver{&review{rev}})
+	}
+	return result
+}
+
 func (r *Resolver) Meetup(args struct{ ID string }) *MeetupResolver {
 	id, err := strconv.ParseUint(args.ID, 10, 64)
 	if err != nil {

@@ -51,3 +51,16 @@ func (r *Resolver) Review(args struct{ ID string }) *ReviewResolver {
 	review := review{result}
 	return &ReviewResolver{&review}
 }
+
+func (r *Resolver) Reviews(args struct{ MeetupID string }) []*ReviewResolver {
+	id, err := strconv.ParseUint(args.MeetupID, 10, 64)
+	if err != nil {
+		return nil
+	}
+	result := reviewservice.GetByMeetup(id)
+	var resolvers []*ReviewResolver
+	for _, m := range result {
+		resolvers = append(resolvers, &ReviewResolver{&review{m}})
+	}
+	return resolvers
+}

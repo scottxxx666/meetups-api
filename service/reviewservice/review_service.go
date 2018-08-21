@@ -13,3 +13,11 @@ func Find(id uint64) model.Review {
 
 	return review
 }
+
+func GetByMeetup(id uint64) []model.Review {
+	var reviews []model.Review
+	if app.DB.Preload("Member").Where("meetup_id = ?", id).Find(&reviews).RecordNotFound() {
+		panic("Find by meetup id failed")
+	}
+	return reviews
+}
