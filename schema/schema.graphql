@@ -3,7 +3,7 @@ schema {
 }
 type Query{
     member(id: ID!): Member
-    origanization(id: ID!): Origanization
+    organization(id: ID!): Organization
     meetup(id: ID!): Meetup
     review(id: ID!): Review
     reviews(meetupId: ID!): [Review!]!

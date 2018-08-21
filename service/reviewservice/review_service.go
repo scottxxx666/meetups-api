@@ -8,7 +8,7 @@ import (
 func Find(id uint64) model.Review {
 	var review model.Review
 	if app.DB.Preload("Member").First(&review, id).RecordNotFound() {
-		panic("Find no this origanization")
+		panic("Find no this organization")
 	}
 
 	return review

@@ -1,4 +1,4 @@
-type Origanization{
+type Organization{
     id: ID!
     name: String!
     meetups: [Meetup!]!

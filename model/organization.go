@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Origanization struct {
+type Organization struct {
 	ID        uint64
 	Name      string
 	CreatedAt time.Time

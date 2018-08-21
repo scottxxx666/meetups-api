@@ -54,8 +54,8 @@ func (r *MeetupResolver) NormalPrice() int32 {
 	return r.m.NormalPrice
 }
 
-func (r *MeetupResolver) Origanization() *OriganizationResolver {
-	return &OriganizationResolver{&origanization{r.m.Origanization}}
+func (r *MeetupResolver) Organization() *OrganizationResolver {
+	return &OrganizationResolver{&organization{r.m.Organization}}
 }
 
 func (r *MeetupResolver) Level() string {
