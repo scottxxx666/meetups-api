@@ -6,5 +6,5 @@ type Query{
     origanization(id: ID!): Origanization
     meetup(id: ID!): Meetup
     review(id: ID!): Review
-    reviews(meetupID: ID!): [Review!]!
+    reviews(meetupId: ID!): [Review!]!
 }
