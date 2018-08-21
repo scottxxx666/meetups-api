@@ -35,11 +35,11 @@ func (r *MeetupResolver) Name() string {
 }
 
 func (r *MeetupResolver) StartTime() string {
-	return r.m.StartTime.String()
+	return r.m.StartTime.Format("2006-01-02 15:04")
 }
 
 func (r *MeetupResolver) EndTime() string {
-	return r.m.EndTime.String()
+	return r.m.EndTime.Format("2006-01-02 15:04")
 }
 
 func (r *MeetupResolver) Rating() float64 {
