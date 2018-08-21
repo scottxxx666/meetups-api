@@ -10,9 +10,10 @@ type Meetup struct {
 	Rating          float64
 	RatingCount     int32
 	NormalPrice     int32
-	OriganizationID uint64
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
+	Origanization   Origanization
+	OriganizationID uint64
 	Level           Level
 	LevelID         uint64
 	Location        Location

@@ -54,6 +54,10 @@ func (r *MeetupResolver) NormalPrice() int32 {
 	return r.m.NormalPrice
 }
 
+func (r *MeetupResolver) Origanization() *OriganizationResolver {
+	return &OriganizationResolver{&origanization{r.m.Origanization}}
+}
+
 func (r *MeetupResolver) Level() string {
 	return r.m.Level.Name
 }

@@ -11,5 +11,5 @@ type Meetup{
     level: String!
     location: String!
     tags: [String!]!
-    # origanization: Int!
+    origanization: Origanization!
 }
