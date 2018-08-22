@@ -5,11 +5,11 @@ import (
 )
 
 type PageInfoResolver struct {
-	endCursor   graphql.ID
+	endCursor   *graphql.ID
 	hasNextPage bool
 }
 
-func (r *PageInfoResolver) EndCursor() graphql.ID {
+func (r *PageInfoResolver) EndCursor() *graphql.ID {
 	return r.endCursor
 }
 

@@ -10,6 +10,6 @@ type Query {
 }
 
 type PageInfo {
-    endCursor: ID!
+    endCursor: ID
     hasNextPage: Boolean!
 }

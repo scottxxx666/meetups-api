@@ -83,8 +83,12 @@ func (r *ReviewsConnectionResolver) Edges() []*ReviewEdgeResolver {
 
 func (r *ReviewsConnectionResolver) PageInfo() *PageInfoResolver {
 	e := r.Edges()
+	if len(e) == 0 {
+		return &PageInfoResolver{nil, false}
+	}
 	re := e[len(e)-1]
-	return &PageInfoResolver{re.Cursor(), int(r.totalCount) != len(e)}
+	c := re.Cursor()
+	return &PageInfoResolver{&c, int(r.totalCount) != len(e)}
 }
 
 type ReviewEdgeResolver struct {
