@@ -1,4 +1,4 @@
-type Meetup{
+type Meetup {
     id: ID!
     name: String!
     startTime: String!

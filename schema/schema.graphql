@@ -1,7 +1,7 @@
 schema {
     query: Query
 }
-type Query{
+type Query {
     member(id: ID!): Member
     organization(id: ID!): Organization
     meetup(id: ID!): Meetup

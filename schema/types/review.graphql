@@ -1,4 +1,4 @@
-type Review{
+type Review {
     id: ID!
     rating: Int!
     desc: String!
