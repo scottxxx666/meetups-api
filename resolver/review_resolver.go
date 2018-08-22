@@ -55,30 +55,22 @@ func (r *Resolver) Review(args struct{ ID string }) *ReviewResolver {
 	return &ReviewResolver{&review}
 }
 
-func (r *Resolver) Reviews(args struct{ MeetupID string }) []*ReviewResolver {
-	id, err := strconv.ParseUint(args.MeetupID, 10, 64)
-	if err != nil {
-		return nil
-	}
-	result := reviewservice.GetByMeetup(id)
-	var resolvers []*ReviewResolver
-	for _, m := range result {
-		resolvers = append(resolvers, &ReviewResolver{&review{m}})
-	}
-	return resolvers
-}
-
 type ReviewsConnectionResolver struct {
-	reviews []*review
+	reviews    []*review
+	totalCount int32
 }
 
 func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionResolver {
 	var rs []*review
-	result := reviewservice.GetByMeetup(1)
+	result, count := reviewservice.GetByMeetup(1)
 	for _, m := range result {
 		rs = append(rs, &review{m})
 	}
-	return &ReviewsConnectionResolver{rs}
+	return &ReviewsConnectionResolver{rs, count}
+}
+
+func (r *ReviewsConnectionResolver) TotalCount() int32 {
+	return r.totalCount
 }
 
 func (r *ReviewsConnectionResolver) Edges() []*ReviewEdgeResolver {
@@ -92,7 +84,7 @@ func (r *ReviewsConnectionResolver) Edges() []*ReviewEdgeResolver {
 func (r *ReviewsConnectionResolver) PageInfo() *PageInfoResolver {
 	e := r.Edges()
 	re := e[len(e)-1]
-	return &PageInfoResolver{re.Cursor(), false}
+	return &PageInfoResolver{re.Cursor(), int(r.totalCount) != len(e)}
 }
 
 type ReviewEdgeResolver struct {

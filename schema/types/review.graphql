@@ -8,7 +8,7 @@ type Review {
 }
 
 type ReviewsConnection {
-    # totalCount: Int!
+    totalCount: Int!
     edges: [ReviewEdge!]!
     pageInfo: PageInfo!
 }
