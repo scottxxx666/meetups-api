@@ -6,5 +6,10 @@ type Query {
     organization(id: ID!): Organization
     meetup(id: ID!): Meetup
     review(id: ID!): Review
-    reviews(meetupId: ID!): [Review!]!
+    reviewsConnection(first: Int!, after: ID!): ReviewsConnection
+}
+
+type PageInfo {
+    endCursor: ID!
+    hasNextPage: Boolean!
 }

@@ -1,7 +1,10 @@
 package resolver
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"strconv"
+	"time"
 
 	"github.com/scottxxx666/meetups-api/model"
 	"github.com/scottxxx666/meetups-api/service/reviewservice"
@@ -63,4 +66,52 @@ func (r *Resolver) Reviews(args struct{ MeetupID string }) []*ReviewResolver {
 		resolvers = append(resolvers, &ReviewResolver{&review{m}})
 	}
 	return resolvers
+}
+
+type ReviewsConnectionResolver struct {
+	reviews []*review
+}
+
+func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionResolver {
+	var rs []*review
+	result := reviewservice.GetByMeetup(1)
+	for _, m := range result {
+		rs = append(rs, &review{m})
+	}
+	return &ReviewsConnectionResolver{rs}
+}
+
+func (r *ReviewsConnectionResolver) Edges() []*ReviewEdgeResolver {
+	var resolvers []*ReviewEdgeResolver
+	for _, re := range r.reviews {
+		resolvers = append(resolvers, &ReviewEdgeResolver{re})
+	}
+	return resolvers
+}
+
+func (r *ReviewsConnectionResolver) PageInfo() *PageInfoResolver {
+	e := r.Edges()
+	re := e[len(e)-1]
+	return &PageInfoResolver{re.Cursor(), false}
+}
+
+type ReviewEdgeResolver struct {
+	review *review
+}
+
+func (r *ReviewEdgeResolver) Node() *ReviewResolver {
+	return &ReviewResolver{r.review}
+}
+
+func (r *ReviewEdgeResolver) Cursor() graphql.ID {
+	return marshalCursor(r.review.ID, r.review.UpdatedAt)
+}
+
+func marshalCursor(id uint64, updateAt time.Time) graphql.ID {
+	m := map[string]string{"id": strconv.FormatUint(id, 10), "updated_at": updateAt.String()}
+	j, err := json.Marshal(m)
+	if err != nil {
+		panic("Json Marshal error")
+	}
+	return graphql.ID(base64.URLEncoding.EncodeToString([]byte(j)))
 }

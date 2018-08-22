@@ -6,3 +6,14 @@ type Review {
     updatedAt: String!
     member: Member!
 }
+
+type ReviewsConnection {
+    # totalCount: Int!
+    edges: [ReviewEdge!]!
+    pageInfo: PageInfo!
+}
+
+type ReviewEdge {
+    node: Review
+    cursor: ID!
+}
