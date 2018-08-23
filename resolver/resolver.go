@@ -1,5 +1,6 @@
 package resolver
 
+// Resolver resolve queries and mutations
 type Resolver struct{}
 
 type connectionArgs struct {

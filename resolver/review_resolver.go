@@ -16,35 +16,43 @@ type review struct {
 	model.Review
 }
 
+// ReviewResolver resolve Review
 type ReviewResolver struct {
 	r *review
 }
 
+// ID resolver
 func (r *ReviewResolver) ID() graphql.ID {
 	id := strconv.FormatUint(r.r.ID, 10)
 	return graphql.ID(id)
 }
 
+// CreatedAt resolver
 func (r *ReviewResolver) CreatedAt() string {
 	return r.r.CreatedAt.String()
 }
 
+// UpdatedAt resolver
 func (r *ReviewResolver) UpdatedAt() string {
 	return r.r.UpdatedAt.String()
 }
 
+// Desc resolver
 func (r *ReviewResolver) Desc() string {
 	return r.r.Desc
 }
 
+// Rating resolver
 func (r *ReviewResolver) Rating() int32 {
 	return r.r.Rating
 }
 
+// Member resolver
 func (r *ReviewResolver) Member() *MemberResolver {
 	return &MemberResolver{&member{r.r.Member}}
 }
 
+// Review resolve query Review
 func (r *Resolver) Review(args struct{ ID string }) *ReviewResolver {
 	id, err := strconv.ParseUint(args.ID, 10, 64)
 	if err != nil {
@@ -55,6 +63,7 @@ func (r *Resolver) Review(args struct{ ID string }) *ReviewResolver {
 	return &ReviewResolver{&review}
 }
 
+// ReviewsConnectionResolver resolve ReviewConnection
 type ReviewsConnectionResolver struct {
 	reviews    []*review
 	totalCount int32
@@ -65,6 +74,7 @@ type reviewCursor struct {
 	UpdateAt string
 }
 
+// ReviewsConnection resolve query ReviewsConnection
 func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionResolver {
 	mid, err := strconv.ParseUint(args.MeetupID, 10, 64)
 	if err != nil {
@@ -98,10 +108,12 @@ func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionReso
 	return &ReviewsConnectionResolver{rs, count}
 }
 
+// TotalCount resolver
 func (r *ReviewsConnectionResolver) TotalCount() int32 {
 	return r.totalCount
 }
 
+// Edges resolver
 func (r *ReviewsConnectionResolver) Edges() []*ReviewEdgeResolver {
 	var resolvers []*ReviewEdgeResolver
 	for _, re := range r.reviews {
@@ -110,6 +122,7 @@ func (r *ReviewsConnectionResolver) Edges() []*ReviewEdgeResolver {
 	return resolvers
 }
 
+// PageInfo resolver
 func (r *ReviewsConnectionResolver) PageInfo() *PageInfoResolver {
 	e := r.Edges()
 	if len(e) == 0 {
@@ -120,14 +133,17 @@ func (r *ReviewsConnectionResolver) PageInfo() *PageInfoResolver {
 	return &PageInfoResolver{&c, int(r.totalCount) != len(e)}
 }
 
+// ReviewEdgeResolver resolve ReviewEdge
 type ReviewEdgeResolver struct {
 	review *review
 }
 
+// Node resolver
 func (r *ReviewEdgeResolver) Node() *ReviewResolver {
 	return &ReviewResolver{r.review}
 }
 
+// Cursor resolver
 func (r *ReviewEdgeResolver) Cursor() graphql.ID {
 	return marshalCursor(r.review.ID, r.review.UpdatedAt)
 }
