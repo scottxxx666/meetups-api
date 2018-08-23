@@ -60,6 +60,11 @@ type ReviewsConnectionResolver struct {
 	totalCount int32
 }
 
+type reviewCursor struct {
+	ID       string
+	UpdateAt string
+}
+
 func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionResolver {
 	mid, err := strconv.ParseUint(args.MeetupID, 10, 64)
 	if err != nil {
@@ -75,16 +80,16 @@ func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionReso
 		if err != nil {
 			panic(err)
 		}
-		var after map[string]string
+		cursor := reviewCursor{}
 		byt := []byte(s)
-		if err := json.Unmarshal(byt, &after); err != nil {
+		if err := json.Unmarshal(byt, &cursor); err != nil {
 			panic(err)
 		}
-		id, err := strconv.ParseUint(after["id"], 10, 64)
+		id, err := strconv.ParseUint(cursor.ID, 10, 64)
 		if err != nil {
 			return nil
 		}
-		updatedAt := after["updated_at"]
+		updatedAt := cursor.UpdateAt
 		result, count = reviewservice.GetByMeetupAfter(mid, int(args.First), id, updatedAt)
 	}
 	for _, m := range result {
@@ -128,7 +133,7 @@ func (r *ReviewEdgeResolver) Cursor() graphql.ID {
 }
 
 func marshalCursor(id uint64, updateAt time.Time) graphql.ID {
-	m := map[string]string{"id": strconv.FormatUint(id, 10), "updated_at": updateAt.String()}
+	m := reviewCursor{strconv.FormatUint(id, 10), updateAt.String()}
 	j, err := json.Marshal(m)
 	if err != nil {
 		panic("Json Marshal error")
