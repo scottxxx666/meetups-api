@@ -61,8 +61,32 @@ type ReviewsConnectionResolver struct {
 }
 
 func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionResolver {
+	mid, err := strconv.ParseUint(args.MeetupID, 10, 64)
+	if err != nil {
+		return nil
+	}
 	var rs []*review
-	result, count := reviewservice.GetByMeetup(1)
+	var result []model.Review
+	var count int32
+	if args.After == nil {
+		result, count = reviewservice.GetByMeetup(mid, int(args.First))
+	} else {
+		s, err := base64.URLEncoding.DecodeString(*args.After)
+		if err != nil {
+			panic(err)
+		}
+		var after map[string]string
+		byt := []byte(s)
+		if err := json.Unmarshal(byt, &after); err != nil {
+			panic(err)
+		}
+		id, err := strconv.ParseUint(after["id"], 10, 64)
+		if err != nil {
+			return nil
+		}
+		updatedAt := after["updated_at"]
+		result, count = reviewservice.GetByMeetupAfter(mid, int(args.First), id, updatedAt)
+	}
 	for _, m := range result {
 		rs = append(rs, &review{m})
 	}
