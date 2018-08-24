@@ -69,11 +69,6 @@ type ReviewsConnectionResolver struct {
 	totalCount int32
 }
 
-type reviewCursor struct {
-	ID       string
-	UpdateAt string
-}
-
 // ReviewsConnection resolve query ReviewsConnection
 func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionResolver {
 	mid, err := strconv.ParseUint(args.MeetupID, 10, 64)
@@ -86,21 +81,11 @@ func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionReso
 	if args.After == nil {
 		result, count = reviewservice.GetByMeetup(mid, int(args.First))
 	} else {
-		s, err := base64.URLEncoding.DecodeString(*args.After)
+		cursor, err := unmarshalReviewCursor(*args.After)
 		if err != nil {
 			panic(err)
 		}
-		cursor := reviewCursor{}
-		byt := []byte(s)
-		if err := json.Unmarshal(byt, &cursor); err != nil {
-			panic(err)
-		}
-		id, err := strconv.ParseUint(cursor.ID, 10, 64)
-		if err != nil {
-			return nil
-		}
-		updatedAt := cursor.UpdateAt
-		result, count = reviewservice.GetByMeetupAfter(mid, int(args.First), id, updatedAt)
+		result, count = reviewservice.GetByMeetupAfter(mid, int(args.First), cursor.getID(), cursor.getUpdatedAt())
 	}
 	for _, m := range result {
 		rs = append(rs, &review{m})
@@ -145,14 +130,44 @@ func (r *ReviewEdgeResolver) Node() *ReviewResolver {
 
 // Cursor resolver
 func (r *ReviewEdgeResolver) Cursor() graphql.ID {
-	return marshalCursor(r.review.ID, r.review.UpdatedAt)
+	return marshalReviewCursor(r.review.ID, r.review.UpdatedAt)
 }
 
-func marshalCursor(id uint64, updateAt time.Time) graphql.ID {
+type reviewCursor struct {
+	ID       string
+	UpdateAt string
+}
+
+func (r *reviewCursor) getID() uint64 {
+	id, err := strconv.ParseUint(r.ID, 10, 64)
+	if err != nil {
+		panic(nil)
+	}
+	return id
+}
+
+func (r *reviewCursor) getUpdatedAt() string {
+	return r.UpdateAt
+}
+
+func marshalReviewCursor(id uint64, updateAt time.Time) graphql.ID {
 	m := reviewCursor{strconv.FormatUint(id, 10), updateAt.String()}
 	j, err := json.Marshal(m)
 	if err != nil {
 		panic("Json Marshal error")
 	}
 	return graphql.ID(base64.URLEncoding.EncodeToString([]byte(j)))
+}
+
+func unmarshalReviewCursor(a string) (*reviewCursor, error) {
+	s, err := base64.URLEncoding.DecodeString(a)
+	if err != nil {
+		return nil, err
+	}
+	cursor := reviewCursor{}
+	byt := []byte(s)
+	if err := json.Unmarshal(byt, &cursor); err != nil {
+		panic(err)
+	}
+	return &cursor, nil
 }
