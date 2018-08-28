@@ -7,6 +7,7 @@ type Query {
     meetup(id: ID!): Meetup
     review(id: ID!): Review
     reviewsConnection(meetupId: ID!, first: Int!, after: ID): ReviewsConnection
+    hotMeetups(): [Meetup!]!
 }
 
 type PageInfo {
