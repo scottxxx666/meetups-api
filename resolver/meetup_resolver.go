@@ -3,6 +3,7 @@ package resolver
 import (
 	"strconv"
 
+	"github.com/scottxxx666/meetups-api/app"
 	"github.com/scottxxx666/meetups-api/model"
 
 	graphql "github.com/graph-gophers/graphql-go"
@@ -41,12 +42,12 @@ func (r *MeetupResolver) Name() string {
 
 // StartTime resolve StartTime
 func (r *MeetupResolver) StartTime() string {
-	return r.m.StartTime.Format("2006-01-02 15:04")
+	return r.m.StartTime.Format(app.Timeformat)
 }
 
 // EndTime resolve EndTime
 func (r *MeetupResolver) EndTime() string {
-	return r.m.EndTime.Format("2006-01-02 15:04")
+	return r.m.EndTime.Format(app.Timeformat)
 }
 
 // Rating resolve Rating

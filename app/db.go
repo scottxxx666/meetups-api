@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// DB is the instance of Database
 var DB *gorm.DB
 var err error
 

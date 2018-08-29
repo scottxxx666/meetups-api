@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/scottxxx666/meetups-api/app"
 	"github.com/scottxxx666/meetups-api/model"
 	"github.com/scottxxx666/meetups-api/service/reviewservice"
 
@@ -29,12 +30,12 @@ func (r *ReviewResolver) ID() graphql.ID {
 
 // CreatedAt resolver
 func (r *ReviewResolver) CreatedAt() string {
-	return r.r.CreatedAt.String()
+	return r.r.CreatedAt.Format(app.Timeformat)
 }
 
 // UpdatedAt resolver
 func (r *ReviewResolver) UpdatedAt() string {
-	return r.r.UpdatedAt.String()
+	return r.r.UpdatedAt.Format(app.Timeformat)
 }
 
 // Desc resolver
