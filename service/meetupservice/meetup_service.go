@@ -1,6 +1,8 @@
 package meetupservice
 
 import (
+	"time"
+
 	"github.com/scottxxx666/meetups-api/app"
 	"github.com/scottxxx666/meetups-api/model"
 )
@@ -33,4 +35,42 @@ func Get() []model.Meetup {
 	}
 
 	return meetups
+}
+
+// MeetupInput is the input for meetup create
+type MeetupArgs struct {
+	Name           string
+	StartTime      time.Time
+	EndTime        time.Time
+	NormalPrice    int32
+	OrganizationID uint64
+	LevelID        uint64
+	LocationID     uint64
+	Tags           []string
+}
+
+// Create create a meetup
+func Create(args MeetupArgs) model.Meetup {
+	var ts []model.Tag
+
+	for _, t := range args.Tags {
+		ts = append(ts, model.Tag{ID: t})
+	}
+
+	meetup := model.Meetup{
+		Name:           args.Name,
+		StartTime:      args.StartTime,
+		EndTime:        args.EndTime,
+		NormalPrice:    args.NormalPrice,
+		OrganizationID: args.OrganizationID,
+		LevelID:        args.LevelID,
+		LocationID:     args.LocationID,
+		Tags:           ts,
+	}
+
+	if app.DB.Create(&meetup).Error != nil {
+		panic("meetup create failed")
+	}
+
+	return meetup
 }

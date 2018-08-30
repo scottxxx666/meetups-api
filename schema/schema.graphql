@@ -1,5 +1,6 @@
 schema {
     query: Query
+    mutation: Mutation
 }
 type Query {
     member(id: ID!): Member
@@ -14,4 +15,8 @@ type Query {
 type PageInfo {
     endCursor: ID
     hasNextPage: Boolean!
+}
+
+type Mutation {
+    createMeetup(meetup: MeetupInput!): Meetup!
 }

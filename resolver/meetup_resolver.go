@@ -2,6 +2,7 @@ package resolver
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/scottxxx666/meetups-api/app"
 	"github.com/scottxxx666/meetups-api/model"
@@ -84,7 +85,7 @@ func (r *MeetupResolver) Location() string {
 func (r *MeetupResolver) Tags() []string {
 	var t []string
 	for _, tag := range r.m.Tags {
-		t = append(t, tag.Name)
+		t = append(t, tag.ID)
 	}
 	return t
 }
@@ -107,4 +108,45 @@ func (r *Resolver) Meetup(args struct{ ID string }) *MeetupResolver {
 	result := meetupservice.Find(id)
 	m := meetup{result}
 	return &MeetupResolver{&m}
+}
+
+type meetupArgs struct {
+	Meetup meetupInput
+}
+
+type meetupInput struct {
+	Name           string
+	StartTime      string
+	EndTime        string
+	NormalPrice    float64
+	OrganizationID float64
+	LevelID        float64
+	LocationID     float64
+	Tags           []string
+}
+
+// CreateMeetup resolve query createMeetup
+// func (r *Resolver) CreateMeetup(args meetupservice.MeetupInput) *MeetupResolver {
+func (r *Resolver) CreateMeetup(args meetupArgs) *MeetupResolver {
+	startTime := parseTime(args.Meetup.StartTime)
+	endTime := parseTime(args.Meetup.EndTime)
+	m := meetupservice.Create(meetupservice.MeetupArgs{
+		Name:           args.Meetup.Name,
+		StartTime:      startTime,
+		EndTime:        endTime,
+		NormalPrice:    int32(args.Meetup.NormalPrice),
+		OrganizationID: uint64(args.Meetup.OrganizationID),
+		LevelID:        uint64(args.Meetup.LevelID),
+		LocationID:     uint64(args.Meetup.LocationID),
+		Tags:           args.Meetup.Tags,
+	})
+	return &MeetupResolver{&meetup{m}}
+}
+
+func parseTime(s string) time.Time {
+	t, err := time.Parse(app.Timeformat, "2018-12-25 00:00")
+	if err != nil {
+		panic(err)
+	}
+	return t
 }

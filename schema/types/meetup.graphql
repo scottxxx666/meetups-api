@@ -13,3 +13,14 @@ type Meetup {
     tags: [String!]!
     organization: Organization!
 }
+
+input MeetupInput {
+    name: String!
+	startTime: String!
+	endTime: String!
+	normalPrice: Int!
+	organizationID: Int!
+	levelID: Int!
+	locationID: Int!
+	tags: [String!]!
+}

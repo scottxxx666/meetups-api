@@ -18,6 +18,6 @@ type Meetup struct {
 	LevelID        uint64
 	Location       Location
 	LocationID     uint64
-	Tags           []Tag
+	Tags           []Tag `gorm:"many2many:meetup_tags;"`
 	Reviews        []Review
 }
