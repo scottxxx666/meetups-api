@@ -37,7 +37,7 @@ func Get() []model.Meetup {
 	return meetups
 }
 
-// MeetupInput is the input for meetup create
+// MeetupArgs is the input for meetup create
 type MeetupArgs struct {
 	Name           string
 	StartTime      time.Time
