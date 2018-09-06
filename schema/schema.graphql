@@ -5,6 +5,7 @@ schema {
 type Query {
     member(id: ID!): Member
     organization(id: ID!): Organization
+    organizations: [Organization!]!
     meetup(id: ID!): Meetup
     meetups: [Meetup!]!
     review(id: ID!): Review

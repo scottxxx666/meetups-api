@@ -8,6 +8,14 @@ import (
 // OrganizationService is the service of organization
 type OrganizationService struct{}
 
+func (o *OrganizationService) All() []model.Organization {
+	var organizations []model.Organization
+	if app.DB.Find(&organizations).Error != nil {
+		panic("Get all organization failed")
+	}
+	return organizations
+}
+
 // Find find the organization by ID
 func (o *OrganizationService) Find(id uint64) model.Organization {
 	var organization model.Organization

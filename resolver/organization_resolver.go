@@ -52,3 +52,14 @@ func (r *Resolver) Organization(args struct{ ID string }) *OrganizationResolver 
 	o := organization{result}
 	return &OrganizationResolver{&o}
 }
+
+// Organizations resolve query Organizations
+func (r *Resolver) Organizations() []*OrganizationResolver {
+	var result []*OrganizationResolver
+	var os service.OrganizationService
+	organizations := os.All()
+	for _, o := range organizations {
+		result = append(result, &OrganizationResolver{&organization{o}})
+	}
+	return result
+}
