@@ -3,8 +3,9 @@ package resolver
 import (
 	"strconv"
 
+	"github.com/scottxxx666/meetups-api/service"
+
 	"github.com/scottxxx666/meetups-api/model"
-	"github.com/scottxxx666/meetups-api/service/organizationservice"
 
 	graphql "github.com/graph-gophers/graphql-go"
 )
@@ -31,7 +32,8 @@ func (r *OrganizationResolver) Name() string {
 
 // Meetups resolver
 func (r *OrganizationResolver) Meetups() []*MeetupResolver {
-	result := organizationservice.GetMeetups(r.o.ID)
+	var os service.OrganizationService
+	result := os.GetMeetups(r.o.ID)
 	var mr []*MeetupResolver
 	for _, m := range result {
 		mr = append(mr, &MeetupResolver{&meetup{m}})
@@ -45,7 +47,8 @@ func (r *Resolver) Organization(args struct{ ID string }) *OrganizationResolver 
 	if err != nil {
 		return nil
 	}
-	result := organizationservice.Find(id)
+	var os service.OrganizationService
+	result := os.Find(id)
 	o := organization{result}
 	return &OrganizationResolver{&o}
 }

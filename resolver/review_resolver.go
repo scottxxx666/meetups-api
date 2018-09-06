@@ -8,7 +8,7 @@ import (
 
 	"github.com/scottxxx666/meetups-api/app"
 	"github.com/scottxxx666/meetups-api/model"
-	"github.com/scottxxx666/meetups-api/service/reviewservice"
+	"github.com/scottxxx666/meetups-api/service"
 
 	graphql "github.com/graph-gophers/graphql-go"
 )
@@ -59,7 +59,8 @@ func (r *Resolver) Review(args struct{ ID string }) *ReviewResolver {
 	if err != nil {
 		return nil
 	}
-	result := reviewservice.Find(id)
+	var rs service.ReviewService
+	result := rs.Find(id)
 	review := review{result}
 	return &ReviewResolver{&review}
 }
@@ -77,16 +78,17 @@ func (r *Resolver) ReviewsConnection(args connectionArgs) *ReviewsConnectionReso
 		return nil
 	}
 	var rs []*review
+	var service service.ReviewService
 	var result []model.Review
 	var count int32
 	if args.After == nil {
-		result, count = reviewservice.GetByMeetup(mid, int(args.First))
+		result, count = service.GetByMeetup(mid, int(args.First))
 	} else {
 		cursor, err := unmarshalReviewCursor(*args.After)
 		if err != nil {
 			panic(err)
 		}
-		result, count = reviewservice.GetByMeetupAfter(mid, int(args.First), cursor.getID(), cursor.getUpdatedAt())
+		result, count = service.GetByMeetupAfter(mid, int(args.First), cursor.getID(), cursor.getUpdatedAt())
 	}
 	for _, m := range result {
 		rs = append(rs, &review{m})

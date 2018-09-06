@@ -6,9 +6,9 @@ import (
 
 	"github.com/scottxxx666/meetups-api/app"
 	"github.com/scottxxx666/meetups-api/model"
+	"github.com/scottxxx666/meetups-api/service"
 
 	graphql "github.com/graph-gophers/graphql-go"
-	"github.com/scottxxx666/meetups-api/service/meetupservice"
 )
 
 type meetup struct {
@@ -105,7 +105,8 @@ func (r *Resolver) Meetup(args struct{ ID string }) *MeetupResolver {
 	if err != nil {
 		return nil
 	}
-	result := meetupservice.Find(id)
+	var ms service.MeetupService
+	result := ms.Find(id)
 	m := meetup{result}
 	return &MeetupResolver{&m}
 }
@@ -126,11 +127,11 @@ type meetupInput struct {
 }
 
 // CreateMeetup resolve query createMeetup
-// func (r *Resolver) CreateMeetup(args meetupservice.MeetupInput) *MeetupResolver {
 func (r *Resolver) CreateMeetup(args meetupArgs) *MeetupResolver {
 	startTime := parseTime(args.Meetup.StartTime)
 	endTime := parseTime(args.Meetup.EndTime)
-	m := meetupservice.Create(meetupservice.MeetupArgs{
+	var ms service.MeetupService
+	m := ms.Create(service.MeetupArgs{
 		Name:           args.Meetup.Name,
 		StartTime:      startTime,
 		EndTime:        endTime,

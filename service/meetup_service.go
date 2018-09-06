@@ -1,4 +1,4 @@
-package meetupservice
+package service
 
 import (
 	"time"
@@ -7,8 +7,11 @@ import (
 	"github.com/scottxxx666/meetups-api/model"
 )
 
+// MeetupService is the service of meetup
+type MeetupService struct{}
+
 // Find meetup by ID
-func Find(id uint64) model.Meetup {
+func (m *MeetupService) Find(id uint64) model.Meetup {
 	var meetup model.Meetup
 	if app.DB.Preload("Level").Preload("Location").Preload("Tags").Preload("Organization").First(&meetup, id).RecordNotFound() {
 		panic("no this meetup")
@@ -18,7 +21,7 @@ func Find(id uint64) model.Meetup {
 }
 
 // GetHotMeetups get the hot meetups
-func GetHotMeetups() []model.Meetup {
+func (m *MeetupService) GetHotMeetups() []model.Meetup {
 	var meetups []model.Meetup
 	if app.DB.Preload("Level").Preload("Location").Preload("Tags").Preload("Organization").Limit(3).Find(&meetups).RecordNotFound() {
 		panic("no this meetup")
@@ -28,7 +31,7 @@ func GetHotMeetups() []model.Meetup {
 }
 
 // Get get the meetups
-func Get() []model.Meetup {
+func (m *MeetupService) Get() []model.Meetup {
 	var meetups []model.Meetup
 	if app.DB.Preload("Level").Preload("Location").Preload("Tags").Preload("Organization").Limit(3).Find(&meetups).RecordNotFound() {
 		panic("no this meetup")
@@ -50,7 +53,7 @@ type MeetupArgs struct {
 }
 
 // Create create a meetup
-func Create(args MeetupArgs) model.Meetup {
+func (m *MeetupService) Create(args MeetupArgs) model.Meetup {
 	var ts []model.Tag
 
 	for _, t := range args.Tags {

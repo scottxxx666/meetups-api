@@ -4,9 +4,9 @@ import (
 	"strconv"
 
 	"github.com/scottxxx666/meetups-api/model"
+	"github.com/scottxxx666/meetups-api/service"
 
 	graphql "github.com/graph-gophers/graphql-go"
-	"github.com/scottxxx666/meetups-api/service/memberservice"
 )
 
 type member struct {
@@ -35,7 +35,8 @@ func (r *Resolver) Member(args struct{ ID string }) *MemberResolver {
 	if err != nil {
 		return nil
 	}
-	result := memberservice.Find(id)
+	var ms service.MemberService
+	result := ms.Find(id)
 	m := member{result}
 	return &MemberResolver{&m}
 }
