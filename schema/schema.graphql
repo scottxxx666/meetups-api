@@ -9,7 +9,8 @@ type Query {
     meetups: [Meetup!]!
     review(id: ID!): Review
     reviewsConnection(meetupId: ID!, first: Int!, after: ID): ReviewsConnection
-    hotMeetups(): [Meetup!]!    
+    hotMeetups(): [Meetup!]!
+    tags: [String!]!
 }
 
 type PageInfo {
