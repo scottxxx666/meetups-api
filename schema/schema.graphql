@@ -12,6 +12,7 @@ type Query {
     reviewsConnection(meetupId: ID!, first: Int!, after: ID): ReviewsConnection
     hotMeetups(): [Meetup!]!
     tags: [String!]!
+    locations: [Location!]!
 }
 
 type PageInfo {
