@@ -145,7 +145,7 @@ func (r *Resolver) CreateMeetup(args meetupArgs) *MeetupResolver {
 }
 
 func parseTime(s string) time.Time {
-	t, err := time.Parse(app.Timeformat, "2018-12-25 00:00")
+	t, err := time.Parse(app.Timeformat, s)
 	if err != nil {
 		panic(err)
 	}
